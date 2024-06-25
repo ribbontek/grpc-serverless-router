@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package com.ribbontek.slsrouter;
+
+option java_multiple_files = true;
+option java_package = "com.ribbontek.stubs.slsrouter.router";
+
+// The Route Command to represent a basic HTTP rest request
+message RouteCommand {
+  string path = 1;
+  string method = 2;
+  map<string, string> headers = 3;
+  optional string body = 4;
+}
+
+// The Route Response to represent a basic HTTP rest response
+message RouteResponse {
+  int32 statusCode = 1;
+  map<string, string> headers = 2;
+  optional string body = 3;
+}
+
+// The Router Service
+service RouterService {
+  rpc route(RouteCommand) returns (RouteResponse) {}
+}
+

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.ribbontek.slsrouter;
+
+option java_multiple_files = true;
+option java_package = "com.ribbontek.stubs.slsrouter";
+
+message Product {
+  string requestId = 1;
+  string title = 4;
+  string description = 5;
+  uint64 quantity = 6;
+  float price = 7;
+  optional string sku = 8;
+}
+
+message ProductPagingQuery {
+  optional string categoryCode = 1;
+  optional string search = 2;
+}

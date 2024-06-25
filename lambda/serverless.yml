@@ -1,0 +1,37 @@
+service: grpc-course-function
+
+frameworkVersion: '3.39.0'
+
+provider:
+  name: aws
+  runtime: java21
+  timeout: 30
+  region: ap-southeast-2
+
+package:
+  artifact: build/libs/lambda-*-aws.jar
+
+functions:
+  router-service:
+    handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+    events:
+      - http:
+          method: any
+          path: /router/{path}
+          cors: true
+    environment:
+      FUNCTION_NAME: router
+      GRPC_CLIENT_CLIENTSTUB_ADDRESS: ${opt:client, dns:///slsrouter.ribbontek.com}
+      GRPC_CLIENT_CLIENTSTUB_NEGOTIATIONTYPE: TLS
+
+  health-service:
+    handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+    events:
+      - http:
+          method: GET
+          path: /health
+          cors: true
+    environment:
+      FUNCTION_NAME: health
+      GRPC_CLIENT_CLIENTSTUB_ADDRESS: ${opt:client, dns:///slsrouter.ribbontek.com}
+      GRPC_CLIENT_CLIENTSTUB_NEGOTIATIONTYPE: TLS
